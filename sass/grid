@@ -1,0 +1,48 @@
+<section class="tasks-grid" x-data="getTasks()">
+	<div class="item create-new">
+		<button class="button" aria-label="Create new task button">
+			<img class="img" src="images/plus.svg" alt="plus icon" />
+		</button>
+		<strong class="text">Add new</strong>
+	</div>
+	<template x-for="item in tasks" :key="item.id">
+		<div class="item">
+			<h3 x-text="item.title" class="title"></h3>
+			<h4 x-text="item.description" class="description"></h4>
+			<p x-text="item.users" class="users"></p>
+			<div class="info">
+				<p
+					x-bind:class="{
+					category: true,
+					[item.category.toLowerCase()]: true,
+				}"
+					x-text="item.category"
+				></p>
+				<div class="other">
+					<div class="photos">
+						<img src="images/camera.svg" alt="Camera icon" />
+						<span x-text="item.photos" class="count"></span>
+					</div>
+					<p class="count" x-text="item.count"></p>
+				</div>
+			</div>
+			<div class="dates">
+				<p class="date" x-text="item.date"></p>
+				<p class="time" x-text="item.time"></p>
+			</div>
+			<footer class="footer">
+				<div class="colors">
+					<div class="color red"></div>
+					<div class="color green"></div>
+					<div class="color blue"></div>
+				</div>
+				<button
+					aria-label="Select colors button"
+					class="select-colors-btn"
+				>
+					<img src="images/more.svg" alt="More colors" class="img" />
+				</button>
+			</footer>
+		</div>
+	</template>
+</section>

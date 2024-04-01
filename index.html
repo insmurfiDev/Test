@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="styles/style.css" />
+		<script src="script.js"></script>
+		<script
+			defer
+			src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+		></script>
+	</head>
+	<body>
+		<div id="wrapper">
+			<aside class="sidebar">
+				<img
+					class="logo"
+					src="images/logo.svg"
+					width="152"
+					height="49"
+					alt="logotype"
+				/>
+			</aside>
+			<main class="main" x-data="getMain()">
+				<header class="header">
+					<h1 class="title">Tasks by day</h1>
+				</header>
+				<div class="content">
+					<section class="categories">
+						<div class="list" x-data="getCategories()">
+							<template x-for="item in categories" :key="item.title">
+								<a
+									href="/"
+									x-bind:class="{'category': true, 'active' : item.active, [item.className]: true}"
+								>
+									<header class="header">
+										<p class="title" x-text="item.title"></p>
+										<span class="count" x-text="item.count"></span>
+									</header>
+									<span class="description" x-text="item.description"></span>
+								</a>
+							</template>
+						</div>
+						<button
+							class="switch-btn"
+							aria-label="switch cards button"
+							@click="toggleGrid()"
+						>
+							<img class="img" src="images/type.svg" alt="switch list" />
+						</button>
+					</section>
+					<div class="tasks-row" x-show="!isGrid">
+						<header class="header">
+							<p></p>
+							<p>Tracking number/ID</p>
+							<p>Date</p>
+							<p>Description</p>
+							<p>User</p>
+							<p>Photos</p>
+							<p></p>
+						</header>
+						<template x-for="item in tasks" :key="item.id">
+							<div
+								class="item"
+								x-bind:style="'border-left: 4px solid ' + item.color"
+								x-data="{
+								isOpenSelectColor: false,
+								toggleOpenSelectColor(){
+									this.isOpenSelectColor = !this.isOpenSelectColor
+								}
+							}"
+							>
+								<div class="colors-container">
+									<div class="colors" @click="toggleOpenSelectColor">
+										<div class="color red"></div>
+										<div class="color green"></div>
+										<div class="color blue"></div>
+									</div>
+									<div
+										class="colors-to-select"
+										@click.away="isOpenSelectColor = false"
+										x-show="isOpenSelectColor"
+										x-data="getColors()"
+									>
+										<div
+											class="color empty"
+											@click="setColor(false, item)"
+										></div>
+										<template x-for="color in colors">
+											<div
+												class="color"
+												x-bind:style="color ? 'background-color: ' + color : ''"
+												@click="setColor(color, item)"
+											></div>
+										</template>
+									</div>
+								</div>
+								<div class="title_and_category">
+									<h3 class="title" x-text="item.title"></h3>
+									<span
+										x-bind:class="{
+										category: true,
+										[item.category.toLowerCase()]: true
+									}"
+										x-text="item.category"
+									></span>
+								</div>
+								<div class="dates">
+									<p class="date" x-text="item.date"></p>
+									<p class="time" x-text="item.time"></p>
+								</div>
+								<p class="description" x-text="item.description"></p>
+								<p class="users" x-text="item.users"></p>
+								<div class="photos">
+									<img src="images/camera.svg" alt="Camera icon" />
+									<p class="photos-count" x-text="item.photos"></p>
+									<p class="count" x-text="item.count"></p>
+								</div>
+								<button class="more-btn" aria-label="More button">
+									<img src="images/actions.svg" alt="More icon" class="img" />
+								</button>
+							</div>
+						</template>
+					</div>
+					<section class="tasks-grid" x-show="isGrid">
+						<div class="item create-new">
+							<button class="button" aria-label="Create new task button">
+								<img class="img" src="images/plus.svg" alt="plus icon" />
+							</button>
+							<strong class="text">Add new</strong>
+						</div>
+						<template x-for="item in tasks" :key="item.id">
+							<div
+								class="item"
+								x-bind:style="'border-top: 2px solid ' + item.color"
+								x-data="{
+								isOpenSelectColor: false,
+								toggleOpenSelectColor(){
+									this.isOpenSelectColor = !this.isOpenSelectColor
+								}
+							}"
+							>
+								<h3 x-text="item.title" class="title"></h3>
+								<h4 x-text="item.description" class="description"></h4>
+								<p x-text="item.users" class="users"></p>
+								<div class="info">
+									<p
+										x-bind:class="{
+										category: true,
+										[item.category.toLowerCase()]: true,
+									}"
+										x-text="item.category"
+									></p>
+									<div class="other">
+										<div class="photos">
+											<img src="images/camera.svg" alt="Camera icon" />
+											<span x-text="item.photos" class="count"></span>
+										</div>
+										<p class="count" x-text="item.count"></p>
+									</div>
+								</div>
+								<div class="dates">
+									<p class="date" x-text="item.date"></p>
+									<p class="time" x-text="item.time"></p>
+								</div>
+								<footer class="footer">
+									<button
+										@click="toggleOpenSelectColor"
+										class="colors"
+										aria-label="Select colors button"
+									>
+										<div class="color red"></div>
+										<div class="color green"></div>
+										<div class="color blue"></div>
+									</button>
+									<div
+										class="colors-to-select"
+										x-show="isOpenSelectColor"
+										@click.away="isOpenSelectColor = false"
+										x-data="getColors()"
+									>
+										<div
+											class="color empty"
+											@click="setColor(false, item)"
+										></div>
+										<template x-for="color in colors">
+											<div
+												class="color"
+												x-bind:style="color ? 'background-color: ' + color : ''"
+												@click="setColor(color, item)"
+											></div>
+										</template>
+									</div>
+									<button aria-label="Card action button" class="action-btn">
+										<img src="images/more.svg" alt="More colors" class="img" />
+									</button>
+								</footer>
+							</div>
+						</template>
+					</section>
+				</div>
+			</main>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,44 @@
+<div class="tasks-row" x-data="getTasks()">
+	<header class="header">
+		<p></p>
+		<p>Tracking number/ID</p>
+		<p>Date</p>
+		<p>Description</p>
+		<p>User</p>
+		<p>Photos</p>
+		<p></p>
+	</header>
+	<template x-for="item in tasks" :key="item.id">
+		<div class="item">
+			<div class="colors">
+				<div class="color red"></div>
+				<div class="color green"></div>
+				<div class="color blue"></div>
+			</div>
+			<div class="title_and_category">
+				<h3 class="title" x-text="item.title"></h3>
+				<span
+					x-bind:class="{
+										category: true,
+										[item.category.toLowerCase()]: true
+									}"
+					x-text="item.category"
+				></span>
+			</div>
+			<div class="dates">
+				<p class="date" x-text="item.date"></p>
+				<p class="time" x-text="item.time"></p>
+			</div>
+			<p class="description" x-text="item.description"></p>
+			<p class="users" x-text="item.users"></p>
+			<div class="photos">
+				<img src="images/camera.svg" alt="Camera icon" />
+				<p class="photos-count" x-text="item.photos"></p>
+				<p class="count" x-text="item.count"></p>
+			</div>
+			<button class="more-btn" aria-label="More button">
+				<img src="images/actions.svg" alt="More icon" class="img" />
+			</button>
+		</div>
+	</template>
+</div>
